@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
@@ -24,16 +26,20 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-	@NotNull
+	@NotNull(message = "Name must not be blank")
+	@Size(min = 1, message = "Name must not be blank")
     private String name;
 	
-	@NotNull
+	@NotNull(message = "Vendor must not be blank")
+	@Size(min = 1, message = "Vendor must not be blank")
 	private String vendor;
 	
-	@NotNull
+	@NotNull(message = "Amount must not be blank")
+	@Positive(message = "Amount must be greater than 0")
 	private Double amount;
 	
-	@NotNull
+	@NotNull(message = "Description must not be blank")
+	@Size(min = 1, message = "Description must not be blank")
 	private String description;
 	
 	@Temporal(TemporalType.TIMESTAMP)

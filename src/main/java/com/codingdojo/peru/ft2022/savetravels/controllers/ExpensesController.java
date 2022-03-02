@@ -26,10 +26,16 @@ public class ExpensesController {
 	@PostMapping(value = "/expenses")
 	public String saveNewExpense(@Valid @ModelAttribute("expense") Expense expense, BindingResult result) {
 		
-		if (result.hasErrors()) return "index.jsp";
+		if (result.hasErrors()) {
+			return "index.jsp";
+		}
+		else {
+			expenseService.createExpense(expense);
+			
+			return "redirect:/expenses";
+		}
 		
-		expenseService.createExpense(expense);
 		
-		return "redirect:/expenses";
+		
 	}
 }
