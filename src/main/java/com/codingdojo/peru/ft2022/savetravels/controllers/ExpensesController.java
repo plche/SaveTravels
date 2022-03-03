@@ -19,6 +19,22 @@ public class ExpensesController {
 	@Autowired
 	ExpenseService expenseService;
 
+	@GetMapping("/expenses")
+	public String index(Model model, @ModelAttribute("expense") Expense expense) {
+		List<Expense> expenses = expenseService.allExpenses();
+		model.addAttribute("expenses", expenses);
+
+		return "index.jsp";
+	}
+
+	@PostMapping(value = "/expenses")
+	public String saveNewExpense(@Valid @ModelAttribute("expense") Expense expense, BindingResult result) {
+		if (result.hasErrors()) return "index.jsp";
+		expenseService.createExpense(expense);
+
+		return "redirect:/expenses";
+	}
+
 	@GetMapping("/expenses/{expenseId}")
 	public String expenseDetail(@PathVariable("expenseId") Long expenseId, Model model) {
 		Expense expense = expenseService.findExpense(expenseId);
@@ -27,22 +43,6 @@ public class ExpensesController {
 		return "show.jsp";
 	}
 
-	@GetMapping("/expenses")
-	public String index(Model model, @ModelAttribute("expense") Expense expense) {
-		List<Expense> expenses = expenseService.allExpenses();
-		model.addAttribute("expenses", expenses);
-		
-		return "index.jsp";
-	}
-	
-	@PostMapping(value = "/expenses")
-	public String saveNewExpense(@Valid @ModelAttribute("expense") Expense expense, BindingResult result) {
-		if (result.hasErrors()) return "index.jsp";
-		expenseService.createExpense(expense);
-			
-		return "redirect:/expenses";
-	}
-	
 	@GetMapping("/expenses/edit/{id}")
 	public String editAnExpense(@PathVariable("id") Long id, Model model) {
 		Expense expense = expenseService.findExpense(id);
