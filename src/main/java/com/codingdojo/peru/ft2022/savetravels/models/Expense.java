@@ -55,6 +55,9 @@ public class Expense {
 	columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
 	private Date updated;
 
+	public Expense() {
+	}
+	
 	public Expense(String name, String vendor, Double amount, String description) {
 		this.name = name;
 		this.vendor = vendor;

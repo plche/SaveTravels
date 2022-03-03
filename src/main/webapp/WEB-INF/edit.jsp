@@ -6,43 +6,16 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Travel Expenses</title>
+		<title>Edit Expense <c:out value="${expense.id}" /></title>
 		<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
 		<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 	</head>
 	<body>
-		<div class="container col-6 border border-5 border-danger">
-            <div class="row">
-                <div class="container col-12 bg-white p-3">
-                    <h1 class="text-danger">Save Travels</h1>
-                    <table class="table p-2">
-                        <thead>
-                        <tr>
-                            <th scope="col">Expense</th>
-                            <th scope="col">Vendor</th>
-                            <th scope="col">Amount</th>
-                            <th scope="col">Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach var="expense" items="${expenses}">
-                            <tr>
-                                <td><c:out value="${expense.name}" /></td>
-                                <td><c:out value="${expense.vendor}" /></td>
-                                <td>$<c:out value="${expense.amount}" /></td>
-                                <td><a href="/expenses/edit/<c:out value="${expense.id}" />">edit</a></td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <br />
-        <div class="row justify-content-center">
+		<div class="row justify-content-center">
             <div class="col-4">
-                <h1 class="text-primary text-center mb-3">Add Expense</h1>
-	            <form:form class="rounded border border-5 border-primary" action="/expenses" method="post" modelAttribute="expense">
+                <h1 class="text-success text-center mb-3">Edit Expense</h1>
+	            <form:form class="rounded border border-5 border-success" action="/expenses/${expense.id}" method="post" modelAttribute="expense">
+	            	<input type="hidden" name="_method" value="put">
                     <div class="row justify-content-center">
                         <div class="col-9">
                             <form:label for="name" path="name" class="form-label mt-3">Expense Name:</form:label>
