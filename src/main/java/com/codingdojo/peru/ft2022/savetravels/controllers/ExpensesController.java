@@ -8,11 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.codingdojo.peru.ft2022.savetravels.models.Expense;
 import com.codingdojo.peru.ft2022.savetravels.services.ExpenseService;
@@ -22,7 +18,15 @@ public class ExpensesController {
 	
 	@Autowired
 	ExpenseService expenseService;
-	
+
+	@GetMapping("/expenses/{expenseId}")
+	public String expenseDetail(@PathVariable("expenseId") Long expenseId, Model model) {
+		Expense expense = expenseService.findExpense(expenseId);
+		model.addAttribute("expense", expense);
+
+		return "show.jsp";
+	}
+
 	@GetMapping("/expenses")
 	public String index(Model model, @ModelAttribute("expense") Expense expense) {
 		List<Expense> expenses = expenseService.allExpenses();
@@ -33,7 +37,6 @@ public class ExpensesController {
 	
 	@PostMapping(value = "/expenses")
 	public String saveNewExpense(@Valid @ModelAttribute("expense") Expense expense, BindingResult result) {
-		
 		if (result.hasErrors()) return "index.jsp";
 		expenseService.createExpense(expense);
 			
@@ -54,5 +57,11 @@ public class ExpensesController {
 			expenseService.updateExpense(expense.getId(), expense.getName(), expense.getVendor(), expense.getAmount(), expense.getDescription());
 			return "redirect:/expenses";
 		}
+	}
+
+	@DeleteMapping("/expenses/{id}")
+	public String destroyAnExpense(@PathVariable("id") Long id) {
+		expenseService.deleteExpense(id);
+		return "redirect:/expenses";
 	}
 }
